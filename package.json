@@ -1,0 +1,13 @@
+{
+  "name": "saque-complementar-proxy",
+  "version": "1.0.0",
+  "description": "Proxy para WebService Saque Complementar",
+  "main": "index.js",
+  "scripts": {
+    "start": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  }
+}

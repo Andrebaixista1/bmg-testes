@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teste WebService Saque Complementar</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f0f4f8;
+      color: #333;
+    }
+    h1, h2 {
+      color: #0a4a7d;
+      text-align: center;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 700px;
+      margin: 15px auto;
+      box-shadow: 0 2px 7px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    button {
+      margin-top: 18px;
+      background-color: #0a4a7d;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #063a5a;
+    }
+    textarea {
+      width: 700px;
+      max-width: 90vw;
+      height: 300px;
+      margin: 15px auto;
+      display: block;
+      font-family: monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      background: #fafafa;
+      overflow: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Teste WebService Saque Complementar</h1>
+
+  <form id="buscarCartoesForm">
+    <h2>Buscar Cartões Disponíveis</h2>
+    <label>Login*:</label><input type="text" name="login" required />
+    <label>Senha*:</label><input type="password" name="senha" required />
+    <label>Código Entidade* (ex: 1581):</label><input type="number" name="codigoEntidade" required />
+    <label>CPF* (apenas números):</label><input type="text" pattern="\d{11}" name="cpf" required />
+    <label>Sequencial Órgão (se aplicável):</label><input type="number" name="sequencialOrgao" />
+    <button type="submit">Buscar Cartões</button>
+  </form>
+
+  <form id="buscarLimiteForm">
+    <h2>Buscar Limite de Saque</h2>
+    <label>Login*:</label><input type="text" name="login" required />
+    <label>Senha*:</label><input type="password" name="senha" required />
+    <label>Código Entidade*:</label><input type="number" name="codigoEntidade" required />
+    <label>CPF* (apenas números):</label><input type="text" pattern="\d{11}" name="cpf" required />
+    <label>Sequencial Órgão:</label><input type="number" name="sequencialOrgao" />
+    <label>Matrícula*:</label><input type="text" name="matricula" required />
+    <label>Número Conta Interna*:</label><input type="number" name="numeroContaInterna" required />
+    <label>Tipo Saque* (1 - Saque Autorizado / 2 - Saque Parcelado):</label>
+    <select name="tipoSaque" required>
+      <option value="1">1 - Saque Autorizado</option>
+      <option value="2">2 - Saque Parcelado</option>
+    </select>
+    <button type="submit">Buscar Limite Saque</button>
+  </form>
+
+  <form id="buscarSimulacaoForm">
+    <h2>Buscar Simulação</h2>
+    <label>Login*:</label><input type="text" name="login" required />
+    <label>Senha*:</label><input type="password" name="senha" required />
+    <label>Código Entidade*:</label><input type="number" name="codigoEntidade" required />
+    <label>Valor Saque*:</label><input type="number" step="0.01" name="valorSaque" required />
+    <button type="submit">Buscar Simulação</button>
+  </form>
+
+  <form id="gravarPropostaForm">
+    <h2>Gravar Proposta Saque Complementar</h2>
+    <label>Login*:</label><input type="text" name="login" required />
+    <label>Senha*:</label><input type="password" name="senha" required />
+    <label>Login Consig*:</label><input type="text" name="loginConsig" required />
+    <label>Senha Consig*:</label><input type="password" name="senhaConsig" required />
+    <label>Código Entidade*:</label><input type="number" name="codigoEntidade" required />
+    <label>CPF*:</label><input type="text" pattern="\d{11}" name="cpf" required />
+    <label>Sequencial Órgão:</label><input type="number" name="sequencialOrgao" />
+    <label>Matrícula*:</label><input type="text" name="matricula" required />
+    <label>Número Conta Interna*:</label><input type="number" name="numeroContaInterna" required />
+    <label>Tipo Saque* (1 - Rotativo / 2 - Parcelado):</label>
+    <select name="tipoSaque" required>
+      <option value="1">1 - Rotativo</option>
+      <option value="2">2 - Parcelado</option>
+    </select>
+    <label>Número Parcelas (se parcelado):</label><input type="number" step="1" name="numeroParcelas" />
+    <label>Valor Parcela (se parcelado):</label><input type="number" step="0.01" name="valorParcela" />
+    <label>Código Loja*:</label><input type="number" name="codigoLoja" required />
+    <label>Código Situacao Servidor:</label><input type="number" name="codigoSituacaoServidor" />
+    <label>Abetura Conta Pagamento (0=Não, 1=Sim):</label><input type="number" name="aberturaContaPagamento" min="0" max="1" value="0" />
+    <label>Email:</label><input type="email" name="email" />
+    <label>Finalidade Crédito* (1 - Conta corrente, 2 - Conta poupança, 3 - Conta BMG):</label>
+    <select name="finalidadeCredito" required>
+      <option value="1">1 - Conta corrente</option>
+      <option value="2">2 - Conta poupança</option>
+      <option value="3">3 - Conta BMG</option>
+    </select>
+    <label>Forma Crédito* (2 - Transferência Bancária, 18 - Conta BMG):</label>
+    <select name="formaCredito" required>
+      <option value="2">2 - Transferência Bancária</option>
+      <option value="18">18 - Conta BMG</option>
+    </select>
+    <label>Valor Saque*:</label><input type="number" step="0.01" name="valorSaque" required />
+    <button type="submit">Gravar Proposta</button>
+  </form>
+
+  <h2>XML da Requisição SOAP</h2>
+  <textarea id="soapRequest" readonly></textarea>
+
+  <h2>Resposta do WebService</h2>
+  <textarea id="response" readonly></textarea>
+
+  <script>
+    const wsURL = 'https://ws1.bmgconsig.com.br/webservices/SaqueComplementar';
+    const soapRequestEl = document.getElementById('soapRequest');
+    const responseEl = document.getElementById('response');
+
+    function buildEnvelope(bodyContent) {
+      return `<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+ xmlns:web="http://webservice.econsig.bmg.com" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+  <soapenv:Header/>
+  <soapenv:Body>${bodyContent}</soapenv:Body>
+</soapenv:Envelope>`;
+    }
+
+    async function sendRequest(xml, soapAction) {
+      soapRequestEl.value = xml;
+      responseEl.value = 'Aguardando resposta...';
+      try {
+        const response = await fetch(wsURL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/xml;charset=UTF-8',
+            'SOAPAction': soapAction
+          },
+          body: xml
+        });
+        const text = await response.text();
+        responseEl.value = text;
+      } catch (err) {
+        responseEl.value = 'Erro: ' + err.message;
+      }
+    }
+
+    // Limpa CPF para manter somente números
+    function cleanCPF(cpf) {
+      return cpf.replace(/\D/g, '');
+    }
+
+    document.getElementById('buscarCartoesForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const f = e.target.elements;
+      const cpfLimpo = cleanCPF(f.cpf.value);
+      const body = `
+        <web:buscarCartoesDisponiveis soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+          <param xsi:type="web:CartaoDisponivelParameter">
+            <login xsi:type="soapenc:string">${f.login.value}</login>
+            <senha xsi:type="soapenc:string">${f.senha.value}</senha>
+            <codigoEntidade xsi:type="xsd:int">${f.codigoEntidade.value}</codigoEntidade>
+            <cpf xsi:type="soapenc:string">${cpfLimpo}</cpf>
+            <sequencialOrgao xsi:type="soapenc:int">${f.sequencialOrgao.value || ''}</sequencialOrgao>
+          </param>
+        </web:buscarCartoesDisponiveis>`;
+      sendRequest(buildEnvelope(body), 'buscarCartoesDisponiveis');
+    });
+
+    document.getElementById('buscarLimiteForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const f = e.target.elements;
+      const cpfLimpo = cleanCPF(f.cpf.value);
+      const body = `
+        <web:buscarLimiteSaque soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+          <param xsi:type="web:DadosCartaoParameter">
+            <login xsi:type="soapenc:string">${f.login.value}</login>
+            <senha xsi:type="soapenc:string">${f.senha.value}</senha>
+            <codigoEntidade xsi:type="xsd:int">${f.codigoEntidade.value}</codigoEntidade>
+            <cpf xsi:type="soapenc:string">${cpfLimpo}</cpf>
+            <tipoSaque xsi:type="xsd:int">${f.tipoSaque.value}</tipoSaque>
+            <matricula xsi:type="soapenc:string">${f.matricula.value}</matricula>
+            <numeroContaInterna xsi:type="xsd:long">${f.numeroContaInterna.value}</numeroContaInterna>
+            <sequencialOrgao xsi:type="soapenc:int">${f.sequencialOrgao.value || ''}</sequencialOrgao>
+          </param>
+        </web:buscarLimiteSaque>`;
+      sendRequest(buildEnvelope(body), 'buscarLimiteSaque');
+    });
+
+    document.getElementById('buscarSimulacaoForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const f = e.target.elements;
+      const body = `
+        <web:buscarSimulacao soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+          <param xsi:type="web:SimulacaoCartaoParameter">
+            <login xsi:type="soapenc:string">${f.login.value}</login>
+            <senha xsi:type="soapenc:string">${f.senha.value}</senha>
+            <codigoEntidade xsi:type="xsd:int">${f.codigoEntidade.value}</codigoEntidade>
+            <valorSaque xsi:type="xsd:double">${f.valorSaque.value}</valorSaque>
+          </param>
+        </web:buscarSimulacao>`;
+      sendRequest(buildEnvelope(body), 'buscarSimulacao');
+    });
+
+    document.getElementById('gravarPropostaForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const f = e.target.elements;
+      const numeroParcelasTag = (f.tipoSaque.value === '2' && f.numeroParcelas.value) ? `<numeroParcelas
+xsi:type="soapenc:int">${f.numeroParcelas.value}</numeroParcelas>` : '';
+      const valorParcelaTag = (f.tipoSaque.value === '2' && f.valorParcela.value) ? `<valorParcela
+xsi:type="soapenc:double">${f.valorParcela.value}</valorParcela>` : '';
+      const body = `
+        <web:gravarPropostaSaqueComplementar soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+          <proposta xsi:type="web:SaqueComplementarParameter">
+            <login xsi:type="soapenc:string">${f.login.value}</login>
+            <senha xsi:type="soapenc:string">${f.senha.value}</senha>
+            <loginConsig xsi:type="soapenc:string">${f.loginConsig.value}</loginConsig>
+            <senhaConsig xsi:type="soapenc:string">${f.senhaConsig.value}</senhaConsig>
+            <codigoEntidade xsi:type="xsd:int">${f.codigoEntidade.value}</codigoEntidade>
+            <cpf xsi:type="soapenc:string">${cleanCPF(f.cpf.value)}</cpf>
+            <sequencialOrgao xsi:type="soapenc:int">${f.sequencialOrgao.value || ''}</sequencialOrgao>
+            <matricula xsi:type="soapenc:string">${f.matricula.value}</matricula>
+            <numeroContaInterna xsi:type="xsd:long">${f.numeroContaInterna.value}</numeroContaInterna>
+            <tipoSaque xsi:type="xsd:int">${f.tipoSaque.value}</tipoSaque>
+            ${numeroParcelasTag}
+            ${valorParcelaTag}
+            <codigoLoja xsi:type="xsd:int">${f.codigoLoja.value}</codigoLoja>
+            <codigoSituacaoServidor xsi:type="soapenc:int">${f.codigoSituacaoServidor.value || ''}</codigoSituacaoServidor>
+            <aberturaContaPagamento xsi:type="xsd:int">${f.aberturaContaPagamento.value || 0}</aberturaContaPagamento>
+            <banco xsi:type="web:BancoParameter">
+              <numero xsi:type="xsd:int">104</numero>
+            </banco>
+            <agencia xsi:type="web:AgenciaParameter">
+              <digitoVerificador xsi:type="soapenc:string"></digitoVerificador>
+              <numero xsi:type="soapenc:string">1</numero>
+            </agencia>
+            <bancoOrdemPagamento xsi:type="xsd:int">0</bancoOrdemPagamento>
+            <celular1 xsi:type="web:TelefoneParameter">
+              <ddd xsi:type="soapenc:string">31</ddd>
+              <numero xsi:type="soapenc:string">999999999</numero>
+              <ramal xsi:type="soapenc:string"></ramal>
+            </celular1>
+            <codigoFormaEnvioTermo xsi:type="soapenc:string">15</codigoFormaEnvioTermo>
+            <conta xsi:type="web:ContaParameter">
+              <digitoVerificador xsi:type="soapenc:string">1</digitoVerificador>
+              <numero xsi:type="soapenc:string">2</numero>
+            </conta>
+            <email xsi:type="soapenc:string">${f.email.value}</email>
+            <finalidadeCredito xsi:type="xsd:int">${f.finalidadeCredito.value}</finalidadeCredito>
+            <formaCredito xsi:type="xsd:int">${f.formaCredito.value}</formaCredito>
+            <seguros xsi:type="web:ArrayOfSeguro" soapenc:arrayType="web:Seguro[]"/>
+            <valorSaque xsi:type="xsd:double">${f.valorSaque.value}</valorSaque>
+          </proposta>
+        </web:gravarPropostaSaqueComplementar>`;
+      sendRequest(buildEnvelope(body), 'gravarPropostaSaqueComplementar');
+    });
+  </script>
+
+</body>
+</html>
